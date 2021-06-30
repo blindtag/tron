@@ -16,7 +16,10 @@ app.on('ready', function(){
     protocol: 'file',
     slashes: true
   }))
-
+//Quit app when closed
+mainWindow.on('closed', function(){
+  app.quit()
+})
   //Build menu from template
   const mainMenu =Menu.buildFromTemplate(mainMenuTemplate)
 
@@ -37,6 +40,10 @@ function createAddWindow(){
     protocol: 'file',
     slashes: true
   }))
+  //Garbage collection hanedle
+  addWindow.on('close', function(){
+    addWindow = null
+  })
 }
 
 //Create menu template
@@ -63,3 +70,8 @@ const mainMenuTemplate =[
     ]
   }
 ]
+//If mac, add empty object to the menu
+if(process.platform =='darwin'){
+  mainMenuTemplate.unshift({});
+}
+//Add developer tools if not in prod
